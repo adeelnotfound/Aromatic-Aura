@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Aromatic Aura",
+    "slug": "aromatic-aura",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0A0A0A"
+      },
+      "package": "com.adeelnotfound.aromaticaura"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3cfa1edf-33bb-4d3e-b26f-983cb6a2442e"
+      }
+    }
+  }
+}
