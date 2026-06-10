@@ -14,23 +14,38 @@ import {
 import { ShoppingBasket, Plus, Trash2, Check, Sparkles } from 'lucide-react-native';
 import { useGroceryStore } from '../stores/useGroceryStore';
 
-export default function GroceryListScreen() {
-  const { items, addItem, removeItem, toggleItem, clearChecked, toggleAll, clearAll } = useGroceryStore();
-  const [newItemName, setNewItemName] = useState('');
-  const [newItemQty, setNewItemQty] = useState('');
-  const [showConfirmClear, setShowConfirmClear] = useState(false);
+interface GroceryHeaderProps {
+  checkedItems: number;
+  totalItems: number;
+  newItemName: string;
+  setNewItemName: (name: string) => void;
+  newItemQty: string;
+  setNewItemQty: (qty: string) => void;
+  handleAddItem: () => void;
+  items: any[];
+  toggleAll: (checked: boolean) => void;
+  clearChecked: () => void;
+  clearAll: () => void;
+  showConfirmClear: boolean;
+  setShowConfirmClear: (show: boolean) => void;
+}
 
-  const handleAddItem = () => {
-    if (newItemName.trim()) {
-      addItem(newItemName, newItemQty || '1 unit');
-      setNewItemName('');
-      setNewItemQty('');
-    }
-  };
-
-  const checkedItems = items.filter(i => i.checked).length;
-
-  const renderHeader = () => (
+function GroceryHeader({
+  checkedItems,
+  totalItems,
+  newItemName,
+  setNewItemName,
+  newItemQty,
+  setNewItemQty,
+  handleAddItem,
+  items,
+  toggleAll,
+  clearChecked,
+  clearAll,
+  showConfirmClear,
+  setShowConfirmClear,
+}: GroceryHeaderProps) {
+  return (
     <View style={styles.headerContainer}>
       <View style={styles.headerRow}>
         <View>
@@ -42,7 +57,7 @@ export default function GroceryListScreen() {
         <View style={styles.completionContainer}>
           <Text style={styles.pctLabel}>Completion</Text>
           <Text style={styles.completionCount}>
-            {checkedItems}<Text style={styles.completionTotal}>/{items.length}</Text>
+            {checkedItems}<Text style={styles.completionTotal}>/{totalItems}</Text>
           </Text>
         </View>
       </View>
@@ -80,7 +95,7 @@ export default function GroceryListScreen() {
       </View>
 
       {/* List Header/Actions */}
-      {items.length > 0 ? (
+      {totalItems > 0 ? (
         <View style={styles.actionsBar}>
           <TouchableOpacity
             onPress={() => {
@@ -147,6 +162,23 @@ export default function GroceryListScreen() {
       ) : null}
     </View>
   );
+}
+
+export default function GroceryListScreen() {
+  const { items, addItem, removeItem, toggleItem, clearChecked, toggleAll, clearAll } = useGroceryStore();
+  const [newItemName, setNewItemName] = useState('');
+  const [newItemQty, setNewItemQty] = useState('');
+  const [showConfirmClear, setShowConfirmClear] = useState(false);
+
+  const handleAddItem = () => {
+    if (newItemName.trim()) {
+      addItem(newItemName, newItemQty || '1 unit');
+      setNewItemName('');
+      setNewItemQty('');
+    }
+  };
+
+  const checkedItems = items.filter(i => i.checked).length;
 
   const renderFooter = () => {
     if (items.length === 0) return null;
@@ -188,7 +220,23 @@ export default function GroceryListScreen() {
         <FlatList
           data={items}
           keyExtractor={(item) => item.id}
-          ListHeaderComponent={renderHeader}
+          ListHeaderComponent={
+            <GroceryHeader
+              checkedItems={checkedItems}
+              totalItems={items.length}
+              newItemName={newItemName}
+              setNewItemName={setNewItemName}
+              newItemQty={newItemQty}
+              setNewItemQty={setNewItemQty}
+              handleAddItem={handleAddItem}
+              items={items}
+              toggleAll={toggleAll}
+              clearChecked={clearChecked}
+              clearAll={clearAll}
+              showConfirmClear={showConfirmClear}
+              setShowConfirmClear={setShowConfirmClear}
+            />
+          }
           ListFooterComponent={renderFooter}
           ListEmptyComponent={renderEmpty}
           showsVerticalScrollIndicator={false}
