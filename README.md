@@ -73,9 +73,9 @@ Using the Expo Tunnel command is highly recommended as it bypasses local Wi-Fi r
 
 #### 1. Fire up the Tunnel server directly using this exact command:
 ```bash
-npm run tunnel
+npx expo start --tunnel
 ```
-*(Alternatively, you can run: `npx expo start --tunnel`)*
+*(Alternatively, you can run: `npm run tunnel`)*
 
 #### 2. Connect Your Mobile Device:
 *   Once launched, you will see a large **QR Code** generated directly inside your computer terminal.
